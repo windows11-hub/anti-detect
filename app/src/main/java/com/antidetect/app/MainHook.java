@@ -74,7 +74,7 @@ public class MainHook implements IXposedHookLoadPackage {
             "com.tsng.hidemyapplist", "com.kieronquinn.app.smartspacer",
             "de.robv.android.xposed.installer", "org.meowcat.edxposed.manager",
             "com.solohsu.android.edxp.manager", "com.bugparty.lspatch",
-            "io.github.lsposed.lspatch", "org.lsposed.lspatch"
+            "io.github.lsposed.lspatch", "org.lsposed.lspatch",".com.xecpro.kernel"
     };
 
     // 运行时配置缓存
@@ -127,26 +127,13 @@ public class MainHook implements IXposedHookLoadPackage {
 
     /* ===================== Build 字段伪装 ===================== */
     private void spoofBuildFields(ClassLoader cl) {
-        Class<?> build = XposedHelpers.findClass("android.os.Build", cl);
-        setStatic(build, "TAGS", "release-keys");
-        setStatic(build, "TYPE", "user");
     }
 
     private void setStatic(Class<?> c, String field, Object val) {
-        try { XposedHelpers.setStaticObjectField(c, field, val); } catch (Throwable ignored) {}
     }
 
     /* ===================== 系统属性伪造 ===================== */
     private void hookSystemProperties(ClassLoader cl) {
-        Class<?> sp = XposedHelpers.findClass("android.os.SystemProperties", cl);
-        XC_MethodHook hook = new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) {
-                Object res = param.getResult();
-                if (res instanceof String) {
-                    String key = (String) param.args[0];
-                    String spoof = spoofProp(key);
-                    if (spoof != null) param.setResult(spoof);
                 }
             }
         };
